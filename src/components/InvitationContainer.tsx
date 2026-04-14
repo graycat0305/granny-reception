@@ -126,7 +126,7 @@ export default function InvitationContainer({ guestName }: InvitationContainerPr
             <DrinkMenu />
 
             <footer className="py-24 border-t border-gold/10 text-center text-gold/40 font-serif text-xs tracking-[0.4em]">
-              © 2026 GRANDMA BAR • 老奶奶酒會 3rd ANNIVERSARY
+              © 2026 GRANNY BAR • 老奶奶酒會 3rd ANNIVERSARY
             </footer>
           </motion.div>
         </div>

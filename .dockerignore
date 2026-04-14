@@ -6,4 +6,3 @@ node_modules
 .zeabur
 Dockerfile
 .dockerignore
-package-lock.json
