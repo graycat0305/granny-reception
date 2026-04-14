@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.DS_Store
+*.local
+.zeabur
+Dockerfile
+.dockerignore
+package-lock.json

@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
+  --gold: #D4AF37;
+  --gold-light: #F9E498;
+  --deep-red: #600000;
+  --luxury-purple: #2A0040;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-deep-red: var(--deep-red);
+  --color-luxury-purple: var(--luxury-purple);
+  
+  --font-serif: "Playfair Display", serif;
+  --font-accent: "Cormorant Garamond", serif;
+  --font-sans: "Inter", sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shine: shine 3s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes shine {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.gold-text {
+  background: linear-gradient(to right, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine 5s linear infinite;
+}
+
+.gold-border {
+  border: 1px solid var(--gold);
+  position: relative;
+}
+
+.gold-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, transparent, var(--gold), transparent);
+  z-index: -1;
+  opacity: 0.5;
+}
+
+main, 
+#main-scroll-container {
+  position: relative !important;
 }
