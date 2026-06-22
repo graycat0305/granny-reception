@@ -5,15 +5,17 @@ import { motion, AnimatePresence, useScroll, useTransform, MotionValue } from "f
 import ThreeScene from "./ThreeScene";
 import EnvelopeScene from "./EnvelopeScene";
 import InvitationLetter from "./InvitationLetter";
-import StorySection from "./StorySection";
 import DrinkMenu from "./DrinkMenu";
 import { Volume2, VolumeX } from "lucide-react";
 
 interface InvitationContainerProps {
   guestName: string;
+  guestId: string;
+  hasTicket: boolean;
+  hasAttended?: boolean;
 }
 
-export default function InvitationContainer({ guestName }: InvitationContainerProps) {
+export default function InvitationContainer({ guestName, guestId, hasTicket, hasAttended = false }: InvitationContainerProps) {
   const [scene, setScene] = useState<"envelope" | "main">("envelope");
   const [isLetterOpen, setIsLetterOpen] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -33,8 +35,8 @@ export default function InvitationContainer({ guestName }: InvitationContainerPr
 
   const handleOpenEnvelope = () => {
     setScene("main");
+    setIsLetterOpen(true);
     setTimeout(() => {
-      setIsLetterOpen(true);
       setHasStarted(true);
     }, 500);
   };
@@ -120,8 +122,6 @@ export default function InvitationContainer({ guestName }: InvitationContainerPr
                 往下探尋 初衷與故事
               </motion.div>
             </div>
-
-            <StorySection />
             
             <DrinkMenu />
 
@@ -134,12 +134,17 @@ export default function InvitationContainer({ guestName }: InvitationContainerPr
       </main>
 
       {/* Floating Letter UI (Moved outside main to prevent scrollbar-induced jitter) */}
-      <InvitationLetter 
-        guestName={guestName} 
-        isOpen={isLetterOpen} 
-        onClose={() => setIsLetterOpen(false)} 
-        onToggle={() => setIsLetterOpen(!isLetterOpen)}
-      />
+      {scene === "main" && (
+        <InvitationLetter 
+          guestName={guestName} 
+          guestId={guestId}
+          hasTicket={hasTicket}
+          hasAttended={hasAttended}
+          isOpen={isLetterOpen} 
+          onClose={() => setIsLetterOpen(false)} 
+          onToggle={() => setIsLetterOpen(!isLetterOpen)}
+        />
+      )}
     </div>
   );
 }

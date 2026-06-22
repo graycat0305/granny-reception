@@ -1,176 +1,158 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface InvitationLetterProps {
     guestName: string;
+    guestId: string;
+    hasTicket: boolean;
+    hasAttended?: boolean;
     isOpen: boolean;
     onClose: () => void;
     onToggle: () => void;
 }
 
-type Step = "hidden" | "popping" | "unfolded" | "rolling" | "rolled" | "unroll-in-place" | "move-center";
-
-export default function InvitationLetter({ guestName, isOpen, onClose, onToggle }: InvitationLetterProps) {
-    const [step, setStep] = useState<Step>("hidden");
-    const [hasExtracted, setHasExtracted] = useState(false);
-
-    useEffect(() => {
-        let t1: NodeJS.Timeout;
-        let t2: NodeJS.Timeout;
-
-        if (isOpen && !hasExtracted) {
-            setStep("popping");
-            t1 = setTimeout(() => {
-                setStep("unfolded");
-                setHasExtracted(true);
-            }, 800);
-        } else if (!isOpen && hasExtracted) {
-            setStep("rolling");
-            t1 = setTimeout(() => {
-                setStep("rolled");
-            }, 1000);
-        } else if (isOpen && hasExtracted) {
-            setStep("unroll-in-place");
-            t1 = setTimeout(() => {
-                setStep("move-center");
-                t2 = setTimeout(() => {
-                    setStep("unfolded");
-                }, 800);
-            }, 800);
-        }
-
-        return () => {
-            clearTimeout(t1);
-            clearTimeout(t2);
-        };
-    }, [isOpen, hasExtracted]);
-
+export default function InvitationLetter({ guestName, guestId, hasTicket, hasAttended = false, isOpen, onClose, onToggle }: InvitationLetterProps) {
     const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget && step === "unfolded") {
+        if (e.target === e.currentTarget && isOpen) {
             onClose();
         }
     };
-
-    const getPosition = useMemo(() => {
-        const CenterStyles = { left: "50%", x: "-50%", y: 0, scale: 1, opacity: 1 };
-        const RightStyles = { left: "100%", x: "calc(-100% - 40px)", y: 0, scale: 1, opacity: 1 };
-
-        return (currentStep: Step) => {
-            switch (currentStep) {
-                case "hidden": return { ...CenterStyles, y: "-100vh", scale: 0.5, opacity: 0 };
-                case "popping": return CenterStyles;
-                case "unfolded": return CenterStyles;
-                case "rolling": return RightStyles;
-                case "rolled": return RightStyles;
-                case "unroll-in-place": return RightStyles;
-                case "move-center": return CenterStyles;
-            }
-        };
-    }, []);
-
-    const getClip = () => {
-        switch (step) {
-            case "hidden": return "inset(0% 0% 0% 0%)";
-            case "popping": return "inset(0% 0% 0% 0%)";
-            case "unfolded": return "inset(0% 0% 0% 0%)";
-            case "rolling": return "inset(0% 0% 0% 100%)"; // 完全縮進去
-            case "rolled": return "inset(0% 0% 0% 100%)";
-            case "unroll-in-place": return "inset(0% 0% 0% 0%)";
-            case "move-center": return "inset(0% 0% 0% 0%)";
-        }
-    };
-
-    // 判斷邀請函內容是否該顯示 (避免與捲軸重疊)
-    const isContentVisible = step === "unfolded" || step === "popping" || step === "move-center" || step === "unroll-in-place";
-    const isBackgroundActive = isContentVisible;
 
     return (
         <div 
             className={cn(
                 "fixed inset-0 z-[100] transition-colors duration-700",
-                isBackgroundActive ? "bg-black/80 backdrop-blur-sm pointer-events-auto" : "bg-transparent pointer-events-none"
+                isOpen ? "bg-black/80 backdrop-blur-sm pointer-events-auto" : "bg-transparent pointer-events-none"
             )}
             onClick={handleBackdropClick}
         >
-            <motion.div
-                initial={getPosition("hidden")}
-                animate={getPosition(step)}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute top-1/2 -translate-y-1/2"
-            >
-                <div className="relative w-[90vw] md:w-[672px] h-[80vh] md:h-auto md:min-h-[600px] pointer-events-none">
-                    {/* 1. The Main Parchment Paper */}
-                    <motion.div
-                        animate={{ clipPath: getClip() }}
-                        transition={{ duration: 0.8, ease: "easeInOut" }}
-                        className="w-full h-full bg-[#fdfaf3] shadow-lg rounded-sm overflow-hidden border-y border-stone-300 pointer-events-auto"
-                        style={{ 
-                            backgroundImage: "url('/paper-texture.png')", 
-                            backgroundSize: "cover",
-                            pointerEvents: isContentVisible ? "auto" : "none" 
-                        }}
-                    >
-                        {/* 內容區域：增加淡入淡出動畫，防止收合時文字溢出 */}
-                        <motion.div 
-                            animate={{ opacity: isContentVisible ? 1 : 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="p-10 md:p-20 flex flex-col items-center text-center space-y-10 min-w-[320px] md:min-w-[672px]"
-                        >
-                            <div className="w-32 h-1 bg-gold opacity-40 mb-2" />
-                            <h2 className="font-serif text-3xl md:text-4xl text-stone-800 tracking-[0.2em]">
-                                尊貴的 {guestName}
-                            </h2>
-                            <div className="font-accent text-xl md:text-2xl text-stone-700 italic opacity-90">
-                                「機會跟命運常常伴隨我們左右，<br/>
-                                但能牢牢抓住的人也就少數幾個」
-                            </div>
-                            <div className="w-16 h-px bg-stone-300" />
-                            <div className="font-serif text-2xl md:text-3xl text-stone-900 font-bold tracking-[0.3em] uppercase whitespace-nowrap">
-                                老奶奶酒會：酒廠大亨
-                            </div>
-                            <div className="font-accent text-xl text-stone-700 whitespace-nowrap">
-                                在這個金權交織的夜晚，<br/>
-                                您準備好與我們共飲這杯「命運」了嗎？
-                            </div>
-                            <div className="pt-10 flex flex-col items-center">
-                                <div className="font-accent text-4xl text-gold-dark rotate-[-3deg]">
-                                    Granny Bar
-                                </div>
-                            </div>
-                            <div className="w-32 h-1 bg-gold opacity-40 mt-2" />
-                        </motion.div>
-                        <div className="absolute inset-0 pointer-events-none opacity-25 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
-                    </motion.div>
+            <style dangerouslySetInnerHTML={{ __html: `
+                .letter-background {
+                    background: #fdfaf0;
+                    border: 1px solid #D4AF37;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                }
+                .letter-content-wrapper {
+                    position: relative;
+                    height: 100%;
+                }
+                .letter-content-wrapper::before {
+                    content: '';
+                    position: absolute;
+                    inset: 16px;
+                    border: 1px solid rgba(212,175,55,0.4);
+                    pointer-events: none;
+                }
+            `}} />
 
-                    {/* 2. The Rolled Cylinder (Right Cap) */}
+            <AnimatePresence>
+                {isOpen && (
                     <motion.div
-                        animate={{ opacity: isContentVisible ? 0 : 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute right-0 top-0 w-[80px] h-[64vh] md:h-[480px] shadow-2xl z-10 flex flex-col items-center justify-center cursor-pointer"
-                        style={{ 
-                            backgroundImage: "url('/paper-texture.png')", 
-                            backgroundSize: "cover",
-                            clipPath: "polygon(0% 0%, 100% 0%, 95% 50%, 100% 100%, 0% 100%, 5% 50%)",
-                            pointerEvents: isContentVisible ? "none" : "auto" 
-                        }}
-                        onClick={() => onToggle()}
+                        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        className="absolute inset-0 flex items-center justify-center pointer-events-none"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30 pointer-events-none border-l-2 border-stone-600/30" />
-                        <motion.div 
-                            animate={{ opacity: isContentVisible ? 0 : 1 }}
-                            className="relative w-[110%] h-12 bg-gradient-to-b from-red-600 to-red-800 border-y border-red-950 flex items-center justify-center shadow-2xl pointer-events-none"
-                        >
-                            <div className="w-12 h-12 rounded-full bg-[#D4AF37] border-2 border-yellow-700 shadow-md flex items-center justify-center relative">
-                                <div className="absolute inset-1 rounded-full border border-black/10" />
-                                <span className="font-serif text-[10px] font-bold text-yellow-900 leading-none tracking-widest">GR</span>
+                        <div className="w-[90vw] md:w-[612px] h-[80vh] md:h-[70vh] min-h-[500px] letter-background pointer-events-auto">
+                            <div className="letter-content-wrapper p-8 md:p-16 flex flex-col items-center text-center space-y-8 overflow-y-auto">
+                                <div className="w-32 h-1 bg-gold opacity-40 mb-2 shrink-0" />
+                                <h2 className="font-serif text-3xl md:text-4xl text-stone-800 tracking-[0.2em]">
+                                    尊貴的 {guestName}
+                                </h2>
+                                <div className="font-accent text-xl md:text-2xl text-stone-700 italic opacity-90">
+                                    「機會跟命運常常伴隨我們左右，<br/>
+                                    但能牢牢抓住的人也就少數幾個」
+                                </div>
+                                <div className="w-16 h-px bg-stone-300 shrink-0" />
+                                <div className="font-serif text-2xl md:text-3xl text-stone-900 font-bold tracking-[0.3em] uppercase whitespace-nowrap">
+                                    老奶奶酒會：酒廠大亨
+                                </div>
+                                <div className="font-accent text-xl text-stone-700 whitespace-nowrap">
+                                    在這個金權交織的夜晚，<br/>
+                                    您準備好與我們共飲這杯「命運」了嗎？
+                                </div>
+                                
+                                {!hasAttended && (
+                                    <div className="mt-4 flex flex-col items-center">
+                                        <div className="text-stone-600 font-serif text-xs md:text-sm mb-3 tracking-widest uppercase text-center">
+                                            {hasTicket ? (
+                                                <span className="text-stone-800 font-bold border-b border-gold/50 pb-1">憑此畫面向特洛斯領取實體票</span>
+                                            ) : (
+                                                "您的專屬入場碼"
+                                            )}
+                                        </div>
+                                        <div className="p-2 border border-gold/40 bg-white shadow-sm rounded-sm">
+                                            <img 
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${guestId}`}
+                                                alt="Guest QR Code"
+                                                width={100}
+                                                height={100}
+                                                className="block"
+                                                crossOrigin="anonymous"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {hasAttended && (
+                                    <div className="mt-4 flex flex-col items-center justify-center h-[140px]">
+                                        <div className="relative flex items-center justify-center w-28 h-28 rounded-full border-[3px] border-[#8b0000] p-1 rotate-[-15deg] opacity-80" style={{ filter: 'drop-shadow(0 0 2px rgba(139, 0, 0, 0.3))' }}>
+                                            <div className="flex items-center justify-center w-full h-full rounded-full border border-[#8b0000]">
+                                                <div className="text-[#8b0000] font-serif font-bold text-xl tracking-[0.2em] whitespace-nowrap pl-1">
+                                                    已參加
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                <div className="pt-6 flex flex-col items-center w-full mt-auto">
+                                    <div className="font-accent text-4xl text-gold-dark rotate-[-3deg] mb-10">
+                                        Granny Bar
+                                    </div>
+                                    <button 
+                                        onClick={onClose}
+                                        className="px-8 py-3 border border-stone-800 text-stone-800 font-serif tracking-widest hover:bg-stone-800 hover:text-[#fdfaf0] transition-colors"
+                                    >
+                                        收起信件
+                                    </button>
+                                </div>
+                                <div className="w-32 h-1 bg-gold opacity-40 shrink-0" />
                             </div>
-                        </motion.div>
+                        </div>
                     </motion.div>
-                </div>
-            </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Collapsed State Toggle (Elegant Envelope Icon) */}
+            <AnimatePresence>
+                {!isOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.5 }}
+                        className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 w-[60px] h-[60px] md:w-[80px] md:h-[80px] z-20 flex flex-col items-center justify-center cursor-pointer pointer-events-auto"
+                        onClick={onToggle}
+                        style={{ filter: 'drop-shadow(0 0 10px rgba(212,175,55,0.2))' }}
+                        whileHover={{ scale: 1.1, filter: 'drop-shadow(0 0 15px rgba(212,175,55,0.5))' }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <svg viewBox="0 0 100 70" className="w-full h-full text-[#D4AF37] overflow-visible">
+                            {/* Envelope Back */}
+                            <rect x="0" y="0" width="100" height="70" fill="#0a0a0a" stroke="currentColor" strokeWidth="2" />
+                            {/* Envelope Flaps */}
+                            <path d="M 0 0 L 50 40 L 100 0 L 100 70 L 0 70 Z" fill="#111111" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                            <path d="M 0 0 L 50 40 L 100 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                            {/* Mini Diamond */}
+                            <path d="M 50 34 L 55 39 L 50 44 L 45 39 Z" fill="#0a0a0a" stroke="currentColor" strokeWidth="1" />
+                        </svg>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
