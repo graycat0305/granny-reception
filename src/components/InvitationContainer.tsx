@@ -20,6 +20,27 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
   const [isLetterOpen, setIsLetterOpen] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [localHasAttended, setLocalHasAttended] = useState(hasAttended);
+
+  useEffect(() => {
+    // If already attended, no need to poll
+    if (localHasAttended) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/checkin/status?guestId=${guestId}`);
+        const data = await res.json();
+        if (data.success && data.hasAttended) {
+          setLocalHasAttended(true);
+          clearInterval(interval);
+        }
+      } catch (err) {
+        console.error("Failed to poll checkin status", err);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [guestId, localHasAttended]);
   
   // Create a stable ref for the scroll container
   const containerRef = useRef<HTMLDivElement>(null);
@@ -139,7 +160,7 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
           guestName={guestName} 
           guestId={guestId}
           hasTicket={hasTicket}
-          hasAttended={hasAttended}
+          hasAttended={localHasAttended}
           isOpen={isLetterOpen} 
           onClose={() => setIsLetterOpen(false)} 
           onToggle={() => setIsLetterOpen(!isLetterOpen)}
