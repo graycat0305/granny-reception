@@ -97,7 +97,7 @@ export default function AdminPage() {
       <div className="w-full max-w-md bg-stone-900 p-4 rounded-lg border border-gold/30 relative">
         <Scanner 
           onScan={handleScan}
-          components={{ audio: false, finder: false }}
+          components={{ finder: false }}
         />
         {isProcessing && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10 backdrop-blur-sm">
