@@ -3,10 +3,10 @@ import path from 'path';
 
 /**
  * Persisted store for tracking attended guests.
- * Writes to src/data/attendance.json which is mounted as a persistent volume.
+ * Writes to a dedicated data directory to prevent shadowing src/data
  */
 
-const DATA_PATH = path.join(process.cwd(), 'src', 'data', 'attendance.json');
+const DATA_PATH = path.join(process.cwd(), 'data', 'attendance.json');
 
 declare global {
   var attendedGuests: Set<string> | undefined;
