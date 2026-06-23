@@ -54,7 +54,7 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === process.env.NEXT_PUBLIC_ADMIN_USER || (username === 'admin' && password === 'admin')) {
+    if (username === process.env.NEXT_PUBLIC_ADMIN_USER && password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD || (username === 'admin' && password === 'admin')) {
       setIsAuthenticated(true);
       localStorage.setItem('admin_auth', 'true');
       setLoginError('');
