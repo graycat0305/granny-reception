@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Scanner, useDevices } from '@yudiel/react-qr-scanner';
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 interface Guest {
   id: string;
@@ -20,8 +20,7 @@ export default function AdminPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   
   // Camera handling
-  const devices = useDevices();
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>('');
+  const [isCameraActive, setIsCameraActive] = useState(true);
 
   // Guest list state
   const [guests, setGuests] = useState<Guest[]>([]);
@@ -40,6 +39,14 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    // Check local storage for persistent login
+    const savedAuth = localStorage.getItem('admin_auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       fetchGuests();
     }
@@ -49,10 +56,18 @@ export default function AdminPage() {
     e.preventDefault();
     if (username === process.env.NEXT_PUBLIC_ADMIN_USER || (username === 'admin' && password === 'admin')) {
       setIsAuthenticated(true);
+      localStorage.setItem('admin_auth', 'true');
       setLoginError('');
     } else {
       setLoginError('Invalid username or password');
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('admin_auth');
+    setUsername('');
+    setPassword('');
   };
 
   const handleScan = async (data: any) => {
@@ -126,7 +141,15 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-black text-white p-4 flex flex-col items-center">
-      <h1 className="text-gold text-2xl font-serif text-center mb-4 mt-2">控制中心</h1>
+      <div className="w-full max-w-md flex justify-between items-center mb-4 mt-2">
+        <h1 className="text-gold text-2xl font-serif">控制中心</h1>
+        <button 
+          onClick={handleLogout}
+          className="text-stone-500 hover:text-stone-300 text-sm underline underline-offset-4"
+        >
+          登出
+        </button>
+      </div>
       
       {/* Tabs */}
       <div className="flex space-x-2 w-full max-w-md mb-6 bg-stone-900 p-1 rounded border border-stone-800">
@@ -146,34 +169,40 @@ export default function AdminPage() {
       
       {activeTab === 'scanner' && (
         <div className="w-full max-w-md flex flex-col items-center">
-          {/* Camera Selection */}
-          {devices.length > 0 && (
-            <div className="w-full mb-4">
-              <label className="block text-stone-400 text-xs mb-1 ml-1">切換相機鏡頭</label>
-              <select 
-                className="w-full bg-stone-900 border border-stone-700 rounded p-2 text-white outline-none focus:border-gold"
-                value={selectedDeviceId}
-                onChange={(e) => setSelectedDeviceId(e.target.value)}
-              >
-                <option value="">預設鏡頭 (自動判斷)</option>
-                {devices.map((device, index) => (
-                  <option key={device.deviceId} value={device.deviceId}>
-                    {device.label || `Camera ${index + 1}`}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="w-full flex justify-between items-center mb-4 px-1">
+            <span className="text-stone-400 text-sm">{isCameraActive ? '相機運作中...' : '相機已關閉'}</span>
+            <button 
+              onClick={() => setIsCameraActive(!isCameraActive)}
+              className={`px-3 py-1 rounded text-xs border transition-colors ${isCameraActive ? 'bg-red-900/30 text-red-400 border-red-500/30 hover:bg-red-900/50' : 'bg-green-900/30 text-green-400 border-green-500/30 hover:bg-green-900/50'}`}
+            >
+              {isCameraActive ? '關閉相機 (省電)' : '開啟相機'}
+            </button>
+          </div>
 
-          <div className="w-full bg-stone-900 p-4 rounded-lg border border-gold/30 relative overflow-hidden">
-            <Scanner 
-              onScan={handleScan}
-              components={{ finder: false }}
-              constraints={selectedDeviceId ? { deviceId: selectedDeviceId } : undefined}
-            />
-            {isProcessing && (
-              <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10 backdrop-blur-sm">
-                <p className="text-gold animate-pulse text-lg tracking-widest font-serif">處理中...</p>
+          <div className="w-full bg-stone-900 p-4 rounded-lg border border-gold/30 relative overflow-hidden min-h-[300px] flex items-center justify-center">
+            {isCameraActive ? (
+              <>
+                <Scanner 
+                  onScan={handleScan}
+                  components={{ finder: false }}
+                  allowMultiple={true}
+                  scanDelay={3000}
+                />
+                {isProcessing && (
+                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10 backdrop-blur-sm">
+                    <p className="text-gold animate-pulse text-lg tracking-widest font-serif">處理中...</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-stone-500 text-sm flex flex-col items-center">
+                <p className="mb-4">相機目前為關閉狀態</p>
+                <button 
+                  onClick={() => setIsCameraActive(true)}
+                  className="bg-gold/20 text-gold border border-gold/50 px-4 py-2 rounded"
+                >
+                  啟動掃描器
+                </button>
               </div>
             )}
           </div>

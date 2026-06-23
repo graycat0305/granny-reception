@@ -56,8 +56,10 @@ export default function InvitationLetter({ guestName, guestId, hasTicket, hasAtt
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="absolute inset-0 flex items-center justify-center pointer-events-none"
                     >
-                        <div className="w-[90vw] md:w-[612px] h-[80vh] md:h-[70vh] min-h-[500px] letter-background pointer-events-auto">
-                            <div className="letter-content-wrapper p-8 md:p-16 flex flex-col items-center text-center space-y-8 overflow-y-auto">
+                        <div className="w-[90vw] md:w-[612px] max-h-[90vh] min-h-[400px] letter-background pointer-events-auto">
+                            <div className="letter-content-wrapper flex flex-col">
+                                {/* Scrollable content area */}
+                                <div className="flex-1 overflow-y-auto p-6 md:p-12 flex flex-col items-center text-center space-y-4 md:space-y-6">
                                 <div className="w-32 h-1 bg-gold opacity-40 mb-2 shrink-0" />
                                 <h2 className="font-serif text-3xl md:text-4xl text-stone-800 tracking-[0.2em]">
                                     尊貴的 {guestName}
@@ -86,13 +88,16 @@ export default function InvitationLetter({ guestName, guestId, hasTicket, hasAtt
                                         </div>
                                         <div className="p-2 border border-gold/40 bg-white shadow-sm rounded-sm">
                                             <img 
-                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${guestId}`}
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${guestId}`}
                                                 alt="Guest QR Code"
                                                 width={100}
                                                 height={100}
                                                 className="block"
                                                 crossOrigin="anonymous"
                                             />
+                                        </div>
+                                        <div className="text-[#8b0000] text-[10px] md:text-xs mt-3 font-bold tracking-widest">
+                                            ⚠️ 請將螢幕調亮以利掃描
                                         </div>
                                     </div>
                                 )}
@@ -109,21 +114,25 @@ export default function InvitationLetter({ guestName, guestId, hasTicket, hasAtt
                                     </div>
                                 )}
                                 
-                                <div className="pt-6 flex flex-col items-center w-full mt-auto">
-                                    <div className="font-accent text-4xl text-gold-dark rotate-[-3deg] mb-10">
+                                <div className="pt-2 flex flex-col items-center w-full mb-2">
+                                    <div className="font-accent text-3xl md:text-4xl text-gold-dark rotate-[-3deg]">
                                         Granny Bar
                                     </div>
-                                    <button 
-                                        onClick={onClose}
-                                        className="px-8 py-3 border border-stone-800 text-stone-800 font-serif tracking-widest hover:bg-stone-800 hover:text-[#fdfaf0] transition-colors"
-                                    >
-                                        收起信件
-                                    </button>
                                 </div>
-                                <div className="w-32 h-1 bg-gold opacity-40 shrink-0" />
+                            </div>
+                            
+                            {/* Fixed Footer for the button */}
+                            <div className="shrink-0 pt-2 pb-6 md:pb-8 flex justify-center relative z-20">
+                                <button 
+                                    onClick={onClose}
+                                    className="px-8 py-2 md:py-3 border border-stone-800 text-stone-800 font-serif tracking-widest hover:bg-stone-800 hover:text-[#fdfaf0] transition-colors pointer-events-auto bg-[#fdfaf0] text-sm md:text-base"
+                                >
+                                    收起信件
+                                </button>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
+                </motion.div>
                 )}
             </AnimatePresence>
 

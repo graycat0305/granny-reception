@@ -90,7 +90,8 @@ async function sendInvites() {
       <div class="text-muted" style="line-height: 1.8; font-size: 15px; color: #444444; text-align: justify; padding: 0 5px;">
         <p style="margin-top: 0;">我們誠摯地通知您，一份來自老奶奶酒會的機密包裹已經悄然送達。</p>
         <p>今年，我們將迎來一場關乎財富與權力的頂級盛宴——「<strong class="text-main" style="color: #1a1a1a; font-weight: bold;">酒廠大亨</strong>」。您的身分已被主辦方確認，這場只屬於少數人的私密集會，正等待著您的正式表態。</p>
-        <p style="margin-bottom: 0;">請點擊下方專屬通道，啟動您的虛擬信封，並領取您的入場身分憑證。</p>
+        <p>請點擊下方專屬通道，啟動您的虛擬信封，並領取您的入場身分憑證。</p>
+        <p style="margin-bottom: 0; margin-top: 15px; font-size: 13px; color: #8b0000; font-weight: bold; text-align: center;">【重要提醒】入場時請提前將手機螢幕調亮，<br/>並開啟專屬通道內的 QRCode 畫面以利核銷入場。</p>
       </div>
       
       <div style="width: 40px; height: 1px; background-color: #D4AF37; margin: 35px auto; opacity: 0.5;"></div>
