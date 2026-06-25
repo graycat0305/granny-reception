@@ -25,7 +25,7 @@ export default function Home() {
         </div>
 
         <footer className="pt-24 opacity-20 text-[10px] tracking-[0.5em] text-white">
-          GRANNY BAR © 2026
+          GRANNY'S BAR © 2026
         </footer>
       </div>
     </main>

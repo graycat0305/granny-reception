@@ -8,34 +8,22 @@ import path from 'path';
 
 const DATA_PATH = path.join(process.cwd(), 'data', 'attendance.json');
 
-declare global {
-  var attendedGuests: Set<string> | undefined;
-}
-
-const loadAttendanceStore = (): Set<string> => {
-  if (global.attendedGuests) {
-    return global.attendedGuests;
-  }
-
-  const store = new Set<string>();
-  
+export const getAttendedGuests = (): Set<string> => {
   try {
     if (fs.existsSync(DATA_PATH)) {
       const data = fs.readFileSync(DATA_PATH, 'utf-8');
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed)) {
-        parsed.forEach((id: string) => store.add(id));
+        return new Set(parsed);
       }
     }
   } catch (error) {
     console.error('Failed to read attendance store from file:', error);
   }
-
-  global.attendedGuests = store;
-  return store;
+  return new Set();
 };
 
-const saveAttendanceStore = (store: Set<string>) => {
+export const saveAttendanceStore = (store: Set<string>) => {
   try {
     // Ensure directory exists
     const dir = path.dirname(DATA_PATH);
@@ -49,14 +37,14 @@ const saveAttendanceStore = (store: Set<string>) => {
   }
 };
 
-export const attendanceStore = loadAttendanceStore();
-
 // Helper functions
 export const markGuestAsAttended = (guestId: string) => {
-  attendanceStore.add(guestId);
-  saveAttendanceStore(attendanceStore);
+  const store = getAttendedGuests();
+  store.add(guestId);
+  saveAttendanceStore(store);
 };
 
 export const hasGuestAttended = (guestId: string) => {
-  return attendanceStore.has(guestId);
+  const store = getAttendedGuests();
+  return store.has(guestId);
 };

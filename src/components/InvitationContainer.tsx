@@ -42,16 +42,12 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
   }, [guestId, localHasAttended, isLetterOpen]);
   
   // Create a stable ref for the scroll container
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Initialize useScroll with the ref
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  // Initialize useScroll for the entire window
+  const { scrollY } = useScroll();
 
-  const glassScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.05]);
-  const glassOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  // Use absolute scroll distance (pixels) so it's independent of total page height
+  const glassScale = useTransform(scrollY, [0, 500], [1, 0.05]);
+  const glassOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   const handleOpenEnvelope = () => {
     setScene("main");
@@ -69,10 +65,9 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
       style={{ position: 'relative' }} // Outer wrapper ensures relative context
     >
       <main 
-        ref={containerRef}
         id="main-scroll-container"
-        className="relative min-h-[400vh] text-white overflow-x-hidden"
-        style={{ position: 'relative', minHeight: '400vh' }}
+        className="relative text-white overflow-x-hidden"
+        style={{ position: 'relative' }}
       >
         {/* Background Image Layer */}
         <div 
@@ -146,7 +141,7 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
             <DrinkMenu />
 
             <footer className="py-24 border-t border-gold/10 text-center text-gold/40 font-serif text-xs tracking-[0.4em]">
-              © 2026 GRANNY BAR • 老奶奶酒會 3rd ANNIVERSARY
+              © 2026 GRANNY'S BAR <br /> 老奶奶酒會 3rd ANNIVERSARY
             </footer>
           </motion.div>
         </div>

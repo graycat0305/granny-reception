@@ -224,18 +224,15 @@ export default function DrinkMenu() {
 
             <AnimatePresence>
                 {selectedId && currentDrink && (
-                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+                    <div 
+                        className="fixed inset-0 z-[60] flex flex-col items-center justify-center p-4 bg-black/80 backdrop-blur-md cursor-pointer"
+                        onClick={() => setSelectedId(null)}
+                    >
                         <motion.div
                             layoutId={`drink-${selectedId}`}
-                            className="glass-card w-full max-w-xl p-6 md:p-8 relative overflow-hidden"
+                            className="glass-card w-full max-w-xl p-6 md:p-8 relative overflow-hidden cursor-default"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <button 
-                                onClick={() => setSelectedId(null)}
-                                className="absolute top-4 right-4 text-white/50 hover:text-white z-10"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
-
                             <div className="flex flex-col md:flex-row gap-6 md:gap-8">
                                 <div className={cn(
                                     "w-full md:w-1/2 aspect-square md:aspect-[3/4] rounded-sm flex items-center justify-center relative overflow-hidden",
@@ -271,6 +268,15 @@ export default function DrinkMenu() {
                                 </div>
                             </div>
                         </motion.div>
+                        
+                        <motion.p 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="mt-6 text-white/40 text-xs md:text-sm tracking-[0.2em]"
+                        >
+                            點擊空白處以回到上一頁
+                        </motion.p>
                     </div>
                 )}
             </AnimatePresence>
