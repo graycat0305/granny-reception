@@ -1,38 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Info, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const DRINKS_DATA = [
+type Drink = {
+    id: number;
+    name: string;
+    color: string;
+    bgColor: string;
+    gradient: string;
+    ingredients: string[];
+    desc: string;
+    customBg?: React.ReactNode;
+};
+
+type DrinkCategory = {
+    category: string;
+    drinks: Drink[];
+};
+
+const DRINKS_DATA: DrinkCategory[] = [
     {
         category: "輕鬆小品",
         drinks: [
             {
                 id: 1,
                 name: "夏日回憶",
-                color: "border-blue-300",
-                bgColor: "bg-blue-300",
-                gradient: "from-blue-300 to-sky-300",
+                color: "border-cyan-200",
+                bgColor: "bg-cyan-200",
+                gradient: "bg-gradient-to-br from-cyan-400 via-blue-400 to-indigo-500",
+                customBg: (
+                    <>
+                        <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-cyan-300 rounded-full blur-[3rem] opacity-60" />
+                        <div className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[70%] bg-blue-600 rounded-full blur-[3rem] opacity-60" />
+                    </>
+                ),
                 ingredients: ["檸檬", "氣泡", "藍色"],
                 desc: "封存了盛夏海風的氣息與檸檬的酸甜。跳躍的氣泡在湛藍中翻湧，這是一場與過去自己的私會，在冰封的記憶中尋找那抹消失的蔚藍。"
             },
             {
                 id: 2,
                 name: "命運",
-                color: "border-yellow-500",
-                bgColor: "bg-yellow-500",
-                gradient: "from-yellow-400 to-orange-400",
+                color: "border-yellow-200",
+                bgColor: "bg-yellow-200",
+                gradient: "bg-gradient-to-bl from-yellow-300 via-amber-400 to-orange-500",
+                customBg: (
+                    <>
+                        <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-yellow-400 rounded-full blur-[4rem] opacity-50" />
+                        <div className="absolute bottom-0 left-0 w-[70%] h-[70%] bg-rose-500 rounded-full blur-[4rem] opacity-40" />
+                    </>
+                ),
                 ingredients: ["鳳梨", "酸甜", "氣泡水"],
                 desc: "當輪盤轉動，命運總在酸甜交織中展開。熱帶鳳梨的果香藏著不可言說的計算，這杯氣泡特調，是給那些敢於與未知博弈者的清爽讚歌。"
             },
             {
                 id: 3,
                 name: "猛毒9502",
-                color: "border-stone-800",
-                bgColor: "bg-stone-800",
-                gradient: "from-stone-800 to-amber-900",
+                color: "border-purple-300",
+                bgColor: "bg-purple-300",
+                gradient: "bg-gradient-to-tr from-amber-900 via-purple-900 to-slate-900",
+                customBg: (
+                    <>
+                        <div className="absolute top-[10%] left-[10%] w-[60%] h-[60%] bg-purple-600 rounded-full blur-[3rem] opacity-50" />
+                        <div className="absolute bottom-[10%] right-[10%] w-[60%] h-[60%] bg-amber-700 rounded-full blur-[3rem] opacity-50" />
+                    </>
+                ),
                 ingredients: ["麥芽", "回甘", "可樂"],
                 desc: "深邃的麥芽香氣掩蓋了快樂水帶來的致命魅惑。入口暢快，尾韻卻帶著令人成癮的回甘，適合那些在城市暗處尋找禁忌樂趣的優雅怪胎。"
             }
@@ -44,27 +78,45 @@ const DRINKS_DATA = [
             {
                 id: 4,
                 name: "機會",
-                color: "border-rose-400",
-                bgColor: "bg-rose-400",
-                gradient: "from-rose-400 to-orange-300",
+                color: "border-pink-200",
+                bgColor: "bg-pink-200",
+                gradient: "bg-gradient-to-tl from-pink-400 via-rose-400 to-orange-400",
+                customBg: (
+                    <>
+                        <div className="absolute -top-[10%] left-[20%] w-[60%] h-[60%] bg-pink-400 rounded-full blur-[3rem] opacity-60" />
+                        <div className="absolute -bottom-[10%] right-[20%] w-[60%] h-[60%] bg-orange-400 rounded-full blur-[3rem] opacity-60" />
+                    </>
+                ),
                 ingredients: ["草莓", "柳橙", "氣泡水"],
                 desc: "在資本的荒漠中，如草莓般甜美的機會轉瞬即逝。柳橙的陽光氣息與氣泡相互碰撞，這是一場清爽的誘惑，只有敢於伸手的人才能品嚐到甜頭。"
             },
             {
                 id: 5,
                 name: "房地產",
-                color: "border-amber-700",
-                bgColor: "bg-amber-700",
-                gradient: "from-amber-800 to-yellow-900",
+                color: "border-amber-300",
+                bgColor: "bg-amber-300",
+                gradient: "bg-gradient-to-br from-yellow-900 via-amber-800 to-stone-900",
+                customBg: (
+                    <>
+                        <div className="absolute top-0 right-[10%] w-[70%] h-[70%] bg-amber-500 rounded-full blur-[4rem] opacity-40" />
+                        <div className="absolute bottom-0 left-[10%] w-[70%] h-[70%] bg-yellow-600 rounded-full blur-[4rem] opacity-30" />
+                    </>
+                ),
                 ingredients: ["濃厚", "金桔", "可樂"],
                 desc: "沉穩如土地，濃厚如權力。金桔的微酸與可樂的暢快交織出獨特的霸氣，適合正在構建自己帝國、品味著酸甜苦辣的酒廠大亨。"
             },
             {
                 id: 6,
                 name: "短島冰茶",
-                color: "border-amber-900",
-                bgColor: "bg-amber-900",
-                gradient: "from-amber-900 to-stone-900",
+                color: "border-orange-200",
+                bgColor: "bg-orange-200",
+                gradient: "bg-gradient-to-b from-amber-700 via-orange-900 to-stone-800",
+                customBg: (
+                    <>
+                        <div className="absolute -top-[20%] left-0 w-[80%] h-[80%] bg-orange-500 rounded-full blur-[4rem] opacity-40" />
+                        <div className="absolute -bottom-[20%] right-0 w-[80%] h-[80%] bg-amber-700 rounded-full blur-[4rem] opacity-50" />
+                    </>
+                ),
                 ingredients: ["少量酒精", "檸檬", "可樂"],
                 desc: "比長島更短，卻比清醒更迷人。少量的酒精點綴著檸檬的清香與可樂的暢快，這是在有限時間內追求微醺快感的濃縮方案，專為享樂主義者準備。"
             }
@@ -76,9 +128,17 @@ const DRINKS_DATA = [
             {
                 id: 7,
                 name: "環遊世界",
-                color: "border-fuchsia-600",
-                bgColor: "bg-fuchsia-600",
-                gradient: "from-fuchsia-600 to-blue-500",
+                color: "border-emerald-300",
+                bgColor: "bg-emerald-300",
+                gradient: "bg-blue-950",
+                customBg: (
+                    <>
+                        <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-blue-500 rounded-full blur-[3rem] opacity-80" />
+                        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] bg-emerald-500 rounded-full blur-[3rem] opacity-80" />
+                        <div className="absolute top-[20%] left-[30%] w-[50%] h-[50%] bg-sky-400 rounded-full blur-[2rem] opacity-60" />
+                        <div className="absolute bottom-[20%] left-[10%] w-[40%] h-[40%] bg-green-400 rounded-full blur-[2rem] opacity-50" />
+                    </>
+                ),
                 ingredients: ["甘烈", "水果味", "生命之水"],
                 desc: "即便擁有再多地產與權力，靈魂終究渴望遠方。甘烈的生命之水融合了繽紛的水果風味，帶您在深夜裡完成一場跨越疆界、強烈而奔放的壯遊。"
             }
@@ -138,12 +198,13 @@ export default function DrinkMenu() {
                                 whileHover={{ y: -5 }}
                             >
                                 <div className={cn(
-                                    "w-full aspect-square md:aspect-[3/4] rounded-sm mb-4 md:mb-6 bg-gradient-to-tr shadow-inner flex items-center justify-center relative",
+                                    "w-full aspect-square md:aspect-[3/4] rounded-sm mb-4 md:mb-6 shadow-inner flex items-center justify-center relative overflow-hidden",
                                     drink.gradient
                                 )}>
-                                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/glass.png')] pointer-events-none" />
+                                    {drink.customBg && drink.customBg}
+                                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/glass.png')] pointer-events-none z-10" />
                                     <WineGlassIcon 
-                                        className="scale-50 md:scale-90 opacity-60 group-hover:opacity-100 transition-opacity" 
+                                        className="scale-50 md:scale-90 opacity-60 group-hover:opacity-100 transition-opacity relative z-20" 
                                         borderClass={drink.color}
                                         bgClass={drink.bgColor}
                                     />
@@ -177,11 +238,13 @@ export default function DrinkMenu() {
 
                             <div className="flex flex-col md:flex-row gap-6 md:gap-8">
                                 <div className={cn(
-                                    "w-full md:w-1/2 aspect-square md:aspect-[3/4] rounded-sm bg-gradient-to-tr flex items-center justify-center",
+                                    "w-full md:w-1/2 aspect-square md:aspect-[3/4] rounded-sm flex items-center justify-center relative overflow-hidden",
                                     currentDrink.gradient
                                 )}>
+                                    {currentDrink.customBg && currentDrink.customBg}
+                                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/glass.png')] pointer-events-none z-10" />
                                     <WineGlassIcon 
-                                        className="scale-100 md:scale-150 opacity-40" 
+                                        className="scale-100 md:scale-150 opacity-40 relative z-20" 
                                         borderClass={currentDrink.color}
                                         bgClass={currentDrink.bgColor}
                                     />

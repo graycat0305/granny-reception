@@ -80,13 +80,20 @@ interface ThreeSceneProps {
 }
 
 export default function ThreeScene({ scrollScale = 1, scrollOpacity = 1 }: ThreeSceneProps) {
+  const isVisible = scrollOpacity > 0;
+
   return (
     <div 
       id="three-canvas-container"
       className="fixed inset-0 pointer-events-none" 
-      style={{ position: 'fixed', zIndex: -10 }}
+      style={{ 
+        position: 'fixed', 
+        zIndex: -10,
+        visibility: isVisible ? 'visible' : 'hidden'
+      }}
     >
       <Canvas 
+        frameloop={isVisible ? "always" : "demand"}
         dpr={[1, 2]} 
         gl={{ antialias: true, alpha: true }}
         onCreated={({ gl }) => {
