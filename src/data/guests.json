@@ -1,19 +1,19 @@
 {
   "guests": [
-    { "id": "wX7kP9mQ2vY4", "name": "天狼", "hasTicket": true, "email": "" },
-    { "id": "nJ3bC8xZ1fH5", "name": "綠谷", "hasTicket": true, "email": "" },
-    { "id": "tM6qR2sP9dW1", "name": "小嘉Zia", "hasTicket": true, "email": "" },
-    { "id": "pL8vN4gC3xW7", "name": "蝕梟", "hasTicket": true, "email": "" },
-    { "id": "bK2jF9zT1hH6", "name": "阿努比斯·德魯", "hasTicket": true, "email": "" },
-    { "id": "yN4qS8mP3dX2", "name": "疾風", "hasTicket": true, "email": "" },
-    { "id": "hG5tB1rC9jV4", "name": "狐萌(Foxy)", "hasTicket": true, "email": "" },
+    { "id": "wX7kP9mQ2vY4", "name": "天狼", "hasTicket": true, "email": "alcowong12@gmail.com" },
+    { "id": "nJ3bC8xZ1fH5", "name": "綠谷", "hasTicket": true, "email": "a0931527202@gmail.com" },
+    { "id": "tM6qR2sP9dW1", "name": "小嘉Zia", "hasTicket": true, "email": "mole963741456852@gmail.com" },
+    { "id": "pL8vN4gC3xW7", "name": "蝕梟", "hasTicket": true, "email": "eemy20141230@gmail.com" },
+    { "id": "bK2jF9zT1hH6", "name": "阿努比斯·德魯", "hasTicket": true, "email": "jack132109@gmail.com" },
+    { "id": "yN4qS8mP3dX2", "name": "疾風", "hasTicket": true, "email": "jack3219178@gmail.com" },
+    { "id": "hG5tB1rC9jV4", "name": "狐萌(Foxy)", "hasTicket": true, "email": "zzm0210020@gmail.com" },
     { "id": "vS2mQ7xW4kN9", "name": "蒼月蒼音", "hasTicket": false, "email": "" },
-    { "id": "zL8pF3dG7bC1", "name": "無狼", "hasTicket": false, "email": "" },
-    { "id": "tH3kX9nV1mY5", "name": "雪橇犬", "hasTicket": false, "email": "" },
-    { "id": "qC1jR6wP5sD8", "name": "松骨", "hasTicket": false, "email": "" },
+    { "id": "zL8pF3dG7bC1", "name": "無狼", "hasTicket": false, "email": "a098386855938@gmail.com" },
+    { "id": "tH3kX9nV1mY5", "name": "雪橇犬", "hasTicket": false, "email": "hhhh5252tw@gmail.com" },
+    { "id": "qC1jR6wP5sD8", "name": "松骨", "hasTicket": false, "email": "garyboyboy125@gmail.com" },
     { "id": "yN5fM2hQ8zK4", "name": "滄嵐", "hasTicket": false, "email": "" },
-    { "id": "xJ8pL4vQ2wY6", "name": "特洛斯", "hasTicket": false, "email": "" },
-    { "id": "mN2bV9cX1zK4", "name": "冰塊EK", "hasTicket": false, "email": "" },
-    { "id": "tR5yH3qP9jF2", "name": "test", "hasTicket": true, "email": "me@graycat.me" }
+    { "id": "xJ8pL4vQ2wY6", "name": "特洛斯", "hasTicket": false, "email": "cross1053034@gmail.com" },
+    { "id": "mN2bV9cX1zK4", "name": "冰塊EK", "hasTicket": false, "email": "yasuo1415926@gmail.com" },
+    { "id": "tR5yH3qP9jF2", "name": "test", "hasTicket": true, "email": "pagamobest@gmail.com" }
   ]
 }

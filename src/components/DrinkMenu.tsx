@@ -14,27 +14,27 @@ const DRINKS_DATA = [
                 name: "夏日回憶",
                 color: "border-blue-300",
                 bgColor: "bg-blue-300",
-                gradient: "from-blue-300 to-yellow-300",
-                ingredients: ["陳年琴酒", "乾苦艾酒", "苦精", "金箔"],
-                desc: "封存了盛夏海風的鹹滋味與夕陽餘暉的甜。這是一場與過去自己的私會，在冰封的記憶中尋找那抹消失的湛藍。"
+                gradient: "from-blue-300 to-sky-300",
+                ingredients: ["檸檬", "氣泡", "藍色"],
+                desc: "封存了盛夏海風的氣息與檸檬的酸甜。跳躍的氣泡在湛藍中翻湧，這是一場與過去自己的私會，在冰封的記憶中尋找那抹消失的蔚藍。"
             },
             {
                 id: 2,
                 name: "命運",
-                color: "border-red-600",
-                bgColor: "bg-red-600",
-                gradient: "from-red-600 to-rose-950",
-                ingredients: ["波本威士忌", "桑葚汁", "煙燻肉桂", "迷迭香"],
-                desc: "當輪盤轉動，命運從不在隨機中產生。濃郁的威士忌底蘊中藏著不可言說的計算。這杯酒，是給那些敢於與莊家博弈者的讚歌。"
+                color: "border-yellow-500",
+                bgColor: "bg-yellow-500",
+                gradient: "from-yellow-400 to-orange-400",
+                ingredients: ["鳳梨", "酸甜", "氣泡水"],
+                desc: "當輪盤轉動，命運總在酸甜交織中展開。熱帶鳳梨的果香藏著不可言說的計算，這杯氣泡特調，是給那些敢於與未知博弈者的清爽讚歌。"
             },
             {
                 id: 3,
                 name: "猛毒9502",
-                color: "border-fuchsia-400",
-                bgColor: "bg-fuchsia-400",
-                gradient: "from-purple-900 to-fuchsia-600",
-                ingredients: ["龍舌蘭", "薰衣草糖漿", "蝶豆花水", "氣泡"],
-                desc: "高濃度的神祕紫色實驗品。它具備成癮的優雅與致命的魅惑，適合那些在城市暗處尋找禁忌樂趣的優雅怪胎。"
+                color: "border-stone-800",
+                bgColor: "bg-stone-800",
+                gradient: "from-stone-800 to-amber-900",
+                ingredients: ["麥芽", "回甘", "可樂"],
+                desc: "深邃的麥芽香氣掩蓋了快樂水帶來的致命魅惑。入口暢快，尾韻卻帶著令人成癮的回甘，適合那些在城市暗處尋找禁忌樂趣的優雅怪胎。"
             }
         ]
     },
@@ -44,29 +44,29 @@ const DRINKS_DATA = [
             {
                 id: 4,
                 name: "機會",
-                color: "border-yellow-400",
-                bgColor: "bg-yellow-400",
-                gradient: "from-yellow-400 to-sky-400",
-                ingredients: ["琴酒", "接骨木花", "青蘋果利口酒", "金箔"],
-                desc: "在資本的荒漠中，機會轉瞬即逝。清爽的底色搭配點點金箔，這是一場關於豪賭的誘惑，只有敢於伸手的人才能品嚐到甜頭。"
+                color: "border-rose-400",
+                bgColor: "bg-rose-400",
+                gradient: "from-rose-400 to-orange-300",
+                ingredients: ["草莓", "柳橙", "氣泡水"],
+                desc: "在資本的荒漠中，如草莓般甜美的機會轉瞬即逝。柳橙的陽光氣息與氣泡相互碰撞，這是一場清爽的誘惑，只有敢於伸手的人才能品嚐到甜頭。"
             },
             {
                 id: 5,
                 name: "房地產",
-                color: "border-amber-600",
-                bgColor: "bg-amber-600",
-                gradient: "from-amber-700 to-emerald-900",
-                ingredients: ["陳年萊姆酒", "焦糖糖漿", "煙燻肉桂", "巧克力苦精"],
-                desc: "沉穩如土地，厚重如權力。這杯特調散發著古老莊園的煙燻氣息與成功者的苦味，適合正在構建自己帝國的酒廠大亨。"
+                color: "border-amber-700",
+                bgColor: "bg-amber-700",
+                gradient: "from-amber-800 to-yellow-900",
+                ingredients: ["濃厚", "金桔", "可樂"],
+                desc: "沉穩如土地，濃厚如權力。金桔的微酸與可樂的暢快交織出獨特的霸氣，適合正在構建自己帝國、品味著酸甜苦辣的酒廠大亨。"
             },
             {
                 id: 6,
                 name: "短島冰茶",
-                color: "border-teal-500",
-                bgColor: "bg-teal-500",
-                gradient: "from-emerald-800 to-slate-900",
-                ingredients: ["龍舌蘭", "薰衣草糖漿", "蝶豆花水", "氣泡"],
-                desc: "比長島更短，比宿醉更濃。這是在有限時間內追求極致快感的濃縮方案，專為那些不想等待、只想直接進入高潮的享樂主義者準備。"
+                color: "border-amber-900",
+                bgColor: "bg-amber-900",
+                gradient: "from-amber-900 to-stone-900",
+                ingredients: ["少量酒精", "檸檬", "可樂"],
+                desc: "比長島更短，卻比清醒更迷人。少量的酒精點綴著檸檬的清香與可樂的暢快，這是在有限時間內追求微醺快感的濃縮方案，專為享樂主義者準備。"
             }
         ]
     },
@@ -76,11 +76,11 @@ const DRINKS_DATA = [
             {
                 id: 7,
                 name: "環遊世界",
-                color: "border-indigo-400",
-                bgColor: "bg-indigo-400",
-                gradient: "from-indigo-600 to-orange-400",
-                ingredients: ["龍舌蘭", "薰衣草糖漿", "蝶豆花水", "氣泡"],
-                desc: "即便擁有再多地產與權力，靈魂終究渴望遠方。這杯酒融合了來自五大洲的精粹，在層次分明的味覺流轉中，帶您在深夜裡完成一場不必遠行、卻足以跨越疆界的壯遊。"
+                color: "border-fuchsia-600",
+                bgColor: "bg-fuchsia-600",
+                gradient: "from-fuchsia-600 to-blue-500",
+                ingredients: ["甘烈", "水果味", "生命之水"],
+                desc: "即便擁有再多地產與權力，靈魂終究渴望遠方。甘烈的生命之水融合了繽紛的水果風味，帶您在深夜裡完成一場跨越疆界、強烈而奔放的壯遊。"
             }
         ]
     }
