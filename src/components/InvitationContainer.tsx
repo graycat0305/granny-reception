@@ -9,22 +9,23 @@ import DrinkMenu from "./DrinkMenu";
 import { Volume2, VolumeX, QrCode, ChevronDown } from "lucide-react";
 
 interface InvitationContainerProps {
-  guestName: string;
-  guestId: string;
-  hasTicket: boolean;
+  guestName?: string;
+  guestId?: string;
+  hasTicket?: boolean;
   hasAttended?: boolean;
+  isPublicView?: boolean;
 }
 
-export default function InvitationContainer({ guestName, guestId, hasTicket, hasAttended = false }: InvitationContainerProps) {
-  const [scene, setScene] = useState<"envelope" | "main">("envelope");
+export default function InvitationContainer({ guestName = "", guestId = "", hasTicket = false, hasAttended = false, isPublicView = false }: InvitationContainerProps) {
+  const [scene, setScene] = useState<"envelope" | "main">(isPublicView ? "main" : "envelope");
   const [isLetterOpen, setIsLetterOpen] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(isPublicView);
   const [isMuted, setIsMuted] = useState(false);
   const [localHasAttended, setLocalHasAttended] = useState(hasAttended);
 
   useEffect(() => {
-    // If already attended or the letter is closed, no need to poll
-    if (localHasAttended || !isLetterOpen) return;
+    // If already attended or the letter is closed or no guestId, no need to poll
+    if (localHasAttended || !isLetterOpen || !guestId) return;
 
     const interval = setInterval(async () => {
       try {
@@ -95,7 +96,7 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
 
         {/* Overlay Screens */}
         <AnimatePresence>
-          {scene === "envelope" && (
+          {scene === "envelope" && !isPublicView && (
             <EnvelopeScene onOpen={handleOpenEnvelope} />
           )}
         </AnimatePresence>
@@ -180,7 +181,7 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
       </main>
 
       {/* Floating Letter UI (Moved outside main to prevent scrollbar-induced jitter) */}
-      {scene === "main" && (
+      {scene === "main" && !isPublicView && (
         <InvitationLetter 
           guestName={guestName} 
           guestId={guestId}
