@@ -6,7 +6,7 @@ import ThreeScene from "./ThreeScene";
 import EnvelopeScene from "./EnvelopeScene";
 import InvitationLetter from "./InvitationLetter";
 import DrinkMenu from "./DrinkMenu";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, QrCode, ChevronDown } from "lucide-react";
 
 interface InvitationContainerProps {
   guestName: string;
@@ -109,7 +109,7 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
             className="relative z-10"
           >
             {/* Hero Section */}
-            <div className="h-screen flex flex-col items-center justify-center p-6 text-center">
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center pt-20">
               <motion.h1 
                 initial={{ y: 50, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
@@ -129,19 +129,50 @@ export default function InvitationContainer({ guestName, guestId, hasTicket, has
                 The 3rd Anniversary Luxury Gathering
               </motion.p>
               
+              {/* Action Buttons Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                viewport={{ once: true }}
+                className="mt-16 flex flex-col sm:flex-row gap-6 items-center justify-center w-full max-w-lg z-20"
+              >
+                <a 
+                  href="https://forms.gle/Wn2ADNt7VC4qczSw7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-8 py-4 border border-gold/30 rounded-sm bg-black/40 backdrop-blur-md text-gold hover:bg-gold/90 hover:text-black transition-all duration-500 font-serif tracking-[0.2em] text-sm flex items-center justify-center gap-3 group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gold/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                  <QrCode className="w-5 h-5 relative z-10" />
+                  <span className="relative z-10">點酒表單</span>
+                </a>
+                <a 
+                  href="https://t.me/+VXhif8r3ZeMxZWI1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-8 py-4 border border-gold/30 rounded-sm bg-black/40 backdrop-blur-md text-gold hover:bg-gold/90 hover:text-black transition-all duration-500 font-serif tracking-[0.2em] text-sm flex items-center justify-center gap-3 group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gold/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                  <QrCode className="w-5 h-5 relative z-10" />
+                  <span className="relative z-10">群組邀請</span>
+                </a>
+              </motion.div>
+
               <motion.div 
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
-                className="mt-24 text-gold/40 text-[10px] tracking-[0.4em] uppercase font-serif"
+                className="mt-24 mb-12 flex flex-col items-center gap-4 text-gold/40 text-[10px] tracking-[0.4em] uppercase font-serif"
               >
-                往下探尋 初衷與故事
+                <span>繼續往下以探索酒單口味</span>
+                <ChevronDown className="w-4 h-4 opacity-70" />
               </motion.div>
             </div>
             
             <DrinkMenu />
 
             <footer className="py-24 border-t border-gold/10 text-center text-gold/40 font-serif text-xs tracking-[0.4em]">
-              © 2026 GRANNY'S BAR <br /> 老奶奶酒會 3rd ANNIVERSARY
+              © 2026 GRANNY&apos;S BAR <br /> 老奶奶酒會 3rd ANNIVERSARY
             </footer>
           </motion.div>
         </div>
