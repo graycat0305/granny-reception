@@ -2,8 +2,13 @@
   "name": "grandma-bar",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "backend"
+  ],
   "scripts": {
-    "dev": "next dev",
+    "dev:frontend": "next dev",
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "dev": "npm run dev:frontend & npm run dev:backend",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -15,6 +20,7 @@
     "@yudiel/react-qr-scanner": "^2.6.0",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
+    "firebase": "^12.15.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.8.0",
     "next": "16.2.3",
